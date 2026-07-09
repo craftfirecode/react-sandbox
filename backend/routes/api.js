@@ -4,7 +4,9 @@ import {requireAuth} from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/quota", requireAuth, (req, res) => {
+//requireAuth
+
+router.get("/quota", (req, res) => {
     res.json(getQuota());
 });
 

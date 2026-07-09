@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import apiRoutes from "../routes/api.js";
-import {startMqtt} from "../mqtt/mqttClient.js";
+import apiRoutes from "./routes/api.js";
+import {startMqtt} from "./mqtt/mqttClient.js";
 
 dotenv.config();
 

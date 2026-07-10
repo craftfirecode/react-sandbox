@@ -1,23 +1,26 @@
-# SaaS Sandbox
+# Mein Personal Dashboard
 
-Ein simpler Prototyp zur Evaluierung von möglichen Konzepten, Workflows und des technischen Setups für ein SaaS-Projekt.
+Hier sammle ich alles, was bei mir so läuft: EcoFlow-Daten, Krypto-Kurse und bald auch meine Gaming-Stats von Steam & WoW. Alles an einem Ort, ohne das übliche App-Hopping.
 
-## Tech Stack & Architektur
+## 💡 Was das hier soll
+Einfach ein zentrales Tool für meinen digitalen Alltag. Keine Lust mehr auf tausend Tabs – ich will sehen, wie viel Strom meine Powerstation noch hat, wie die Coins stehen und ob die Jungs gerade zocken.
 
-Das Projekt ist in ein clientseitiges Frontend und einen leichtgewichtigen API-Server (Backend) aufgeteilt.
+## 🏗️ Wie es gebaut ist
 
 ### 💻 Frontend
-* **Core:** **React 19** & **React Router (Data Router)** für eine moderne, objektbasierte Routenkonfiguration mit verschachtelten Layouts (Nested Layouts) und deklarativen Route Guards.
-* **Styling & UI:**
-    * **Tailwind CSS** für Utility-First-Styling.
-    * **Shadcn/ui (Base UI)** für barrierefreie, anpassbare UI-Komponenten.
-    * **Framer Motion** für flüssige Animationen und Übergänge.
-* **State Management & Data Fetching:**
-    * **TanStack Query (React Query)** für asynchrones State-Management und die effiziente Anbindung an die API.
-    * **React Context** für modularen, feature-bezogenen State.
+* **React 19:**
+* **TanStack Query:**
+* **Tailwind & Shadcn/ui:**
+* **Framer Motion:** Ein paar schicke Übergänge für das Auge ;)
 
-### ⚙️ Backend (API)
-* **Runtime:** **Node.js** & **Express** für einen minimalistischen API-Server.
-* **Konfiguration:**
-    * **CORS-Freigabe (`*`)** für eine unkomplizierte Kommunikation mit dem Frontend während der Entwicklung.
-    * **Best-Practice-Ordnerstruktur** zur sauberen Trennung von Routen, Controllern und Services, um eine spätere Skalierung zu erleichtern.
+### ⚙️ Backend & Storage
+* **Node.js & Express:** EcoFlow Daten
+* **Supabase:** Hier liegen meine User-Daten und alles, was ich sonst noch speichern will. Auth läuft auch darüber.
+
+## 🚀 Was noch kommt
+- [x] **EcoFlow:** 
+- [x] **Crypto:** Die Top 4 Coins im Blick.
+- [ ] **Steam:**
+- [ ] **WOW:**
+- [ ] **Calendar**
+- [ ] **News Feed**

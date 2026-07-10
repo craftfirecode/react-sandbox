@@ -1,4 +1,4 @@
-import {Outlet} from "react-router";
+import {Link, Outlet, useLocation} from "react-router";
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar.tsx";
 import {AppSidebar} from "@/components/app-sidebar.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
@@ -10,8 +10,19 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb.tsx";
+import React from "react";
 
 export default function ProtectedLayout() {
+    const location = useLocation();
+    const pathnames = location.pathname.split('/').filter((x) => x);
+
+    const breadcrumbMap: Record<string, string> = {
+        app: "Dashboard",
+        dashboard: "Dashboard",
+        ecoflow: "Eco Flow",
+        crypto: "Crypto",
+    };
+
     return (
         <SidebarProvider>
             <AppSidebar/>
@@ -26,15 +37,30 @@ export default function ProtectedLayout() {
                         />
                         <Breadcrumb>
                             <BreadcrumbList>
-                                <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink href="#">
-                                        Dashbaord
-                                    </BreadcrumbLink>
-                                </BreadcrumbItem>
-                                <BreadcrumbSeparator className="hidden md:block"/>
-                                <BreadcrumbItem>
-                                    <BreadcrumbPage>Crypto</BreadcrumbPage>
-                                </BreadcrumbItem>
+                                {pathnames.map((value, index) => {
+                                    const last = index === pathnames.length - 1;
+                                    const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+                                    const label = breadcrumbMap[value.toLowerCase()] || value;
+
+                                    if (value.toLowerCase() === "app" && pathnames[index + 1] === "dashboard") {
+                                        return null;
+                                    }
+
+                                    return (
+                                        <React.Fragment key={to}>
+                                            <BreadcrumbItem className={index === 0 ? "hidden md:block" : ""}>
+                                                {last ? (
+                                                    <BreadcrumbPage>{label}</BreadcrumbPage>
+                                                ) : (
+                                                    <BreadcrumbLink render={<Link to={to} />}>
+                                                        {label}
+                                                    </BreadcrumbLink>
+                                                )}
+                                            </BreadcrumbItem>
+                                            {!last && <BreadcrumbSeparator className="hidden md:block"/>}
+                                        </React.Fragment>
+                                    );
+                                })}
                             </BreadcrumbList>
                         </Breadcrumb>
                     </div>

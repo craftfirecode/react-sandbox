@@ -141,7 +141,7 @@ export default function EcoFlow() {
                                 <span className="font-bold text-red-500">{formatW(ecoFlowData.powGetSysGrid)}</span>
                             </div>
                             <div className="flex justify-between text-sm">
-                                <span className="text-muted-foreground">Einspeisung ins Netz:</span>
+                                <span className="text-muted-foreground">Batterieladung:</span>
                                 <span className="font-bold text-emerald-500">{formatW(ecoFlowData.gridConnectionPower)}</span>
                             </div>
                             <div className="flex justify-between text-sm">

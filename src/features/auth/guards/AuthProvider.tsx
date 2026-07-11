@@ -1,7 +1,6 @@
-import {createContext, useContext, useEffect, useState,} from "react";
-import {supabase} from "@/lib/supabase.ts";
-import type {Session} from "@supabase/supabase-js";
-
+import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase.ts";
+import type { Session } from "@supabase/supabase-js";
 
 type AuthContextType = {
   session: Session | null;
@@ -23,21 +22,51 @@ export function AuthProvider({
 
   useEffect(() => {
     async function init() {
-      const { data } = await supabase.auth.getSession();
+      try {
+        const { data, error } = await supabase.auth.getSession();
 
-      setSession(data.session);
-      setLoading(false);
+        if (error) {
+          console.error("Fehler beim Laden der Session:", error.message);
+        }
+
+        setSession(data.session);
+      } catch (err) {
+        console.error("Unerwarteter Fehler beim Session-Check:", err);
+      } finally {
+        setLoading(false);
+      }
     }
 
     init();
 
+    // Reagiert auf Login, Logout, Token-Refresh etc.
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    // Wichtig: Wenn das Handy/der Tab nach längerer Zeit
+    // wieder aktiv wird, prüfen wir sofort, ob die Session
+    // noch gültig ist bzw. erneuert werden muss.
+    function handleVisibilityChange() {
+      if (document.visibilityState === "visible") {
+        supabase.auth.getSession().then(({ data, error }) => {
+          if (error) {
+            console.error("Fehler beim Re-Check der Session:", error.message);
+          }
+          setSession(data.session);
+        });
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      subscription.unsubscribe();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
 
   return (

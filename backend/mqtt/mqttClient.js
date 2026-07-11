@@ -37,7 +37,7 @@ export async function startMqtt() {
                 // Daten an den datastore übergeben (dort werden sie sicher zusammengeführt)
                 updateData(parsedPayload);
 
-                console.log("📊 Neue Daten gemerged und im Speicher abgelegt.");
+                // console.log("📊 Neue Daten gemerged und im Speicher abgelegt.");
             } catch (error) {
                 console.error("❌ Fehler beim Parsen der MQTT-Daten:", error);
             }

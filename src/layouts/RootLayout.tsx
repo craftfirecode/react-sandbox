@@ -53,10 +53,8 @@ export default function RootLayout() {
                     <NavigationMenu>
                         <NavigationMenuList className="gap-1">
                             <NavLink to="/" pathname={location.pathname}>Home</NavLink>
-                            {/*<NavLink to="/sandbox" pathname={location.pathname}>Sandbox</NavLink>*/}
-
                             {session && (
-                                <NavLink to="/app" pathname={location.pathname}>Protected</NavLink>
+                                <NavLink to="/app" pathname={location.pathname}>Dashboard</NavLink>
                             )}
                         </NavigationMenuList>
                     </NavigationMenu>
@@ -66,9 +64,6 @@ export default function RootLayout() {
                             <div className="w-20 h-8 animate-pulse bg-muted rounded" />
                         ) : session ? (
                             <div className="flex items-center gap-3">
-                                <span className="text-sm font-medium text-muted-foreground">
-                                    Hallo, <span className="text-foreground font-semibold">{session.user.email}</span>
-                                </span>
                                 <LogoutButton />
                             </div>
                         ) : (

@@ -1,11 +1,11 @@
 import {supabase} from "@/lib/supabase";
+import {Button} from "@/components/ui/button.tsx";
 
 export default function LogoutButton() {
   return (
-    <button
-      onClick={() => supabase.auth.signOut()}
-    >
+    <Button variant="destructive"
+      onClick={() => supabase.auth.signOut()}>
       Logout
-    </button>
+    </Button>
   );
 }

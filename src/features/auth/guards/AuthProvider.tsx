@@ -52,21 +52,10 @@ export function AuthProvider({
     // noch gültig ist bzw. erneuert werden muss.
     function handleVisibilityChange() {
       if (document.visibilityState === "visible") {
-        supabase.auth.getSession().then(async ({ data, error }) => {
-          if (error || !data.session) {
-            console.warn("Session ungültig, versuche Refresh...");
-            const { data: refreshData, error: refreshError } =
-                await supabase.auth.refreshSession();
-
-            if (refreshError || !refreshData.session) {
-              console.error("Refresh fehlgeschlagen, lade Seite neu");
-              window.location.reload();
-              return;
-            }
-            setSession(refreshData.session);
-            return;
+        supabase.auth.getSession().then(({ data, error }) => {
+          if (error) {
+            console.error("Fehler beim Re-Check der Session:", error.message);
           }
-
           setSession(data.session);
         });
       }

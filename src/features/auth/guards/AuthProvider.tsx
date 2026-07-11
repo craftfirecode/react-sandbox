@@ -52,18 +52,18 @@ export function AuthProvider({
     // noch gültig ist bzw. erneuert werden muss.
     function handleVisibilityChange() {
       if (document.visibilityState === "visible") {
-        supabase.auth.getSession().then(({ data, error }) => {
-          if (error) {
-            console.error("Fehler beim Re-Check der Session:", error.message);
-            // API tot / Fehler beim Abrufen -> Seite neu laden
-            window.location.reload();
-            return;
-          }
+        supabase.auth.getSession().then(async ({ data, error }) => {
+          if (error || !data.session) {
+            console.warn("Session ungültig, versuche Refresh...");
+            const { data: refreshData, error: refreshError } =
+                await supabase.auth.refreshSession();
 
-          // Optional: Wenn keine Session mehr vorhanden ist, obwohl vorher
-          // eine da war (z.B. abgelaufen und Supabase konnte nicht refreshen)
-          if (!data.session) {
-            window.location.reload();
+            if (refreshError || !refreshData.session) {
+              console.error("Refresh fehlgeschlagen, lade Seite neu");
+              window.location.reload();
+              return;
+            }
+            setSession(refreshData.session);
             return;
           }
 
@@ -71,6 +71,7 @@ export function AuthProvider({
         });
       }
     }
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {

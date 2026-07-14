@@ -1,4 +1,4 @@
-import {supabase} from "@/lib/supabase";
+import {supabase} from "@/lib/supabase.ts";
 import {Button} from "@/components/ui/button.tsx";
 
 export default function LogoutButton() {

@@ -1,5 +1,5 @@
 import {Navigate, Outlet} from "react-router";
-import {useAuth} from "./AuthProvider.tsx";
+import {useAuth} from "../../components/provider/auth/AuthProvider.tsx";
 
 export default function ProtectedRoute() {
   const { session, loading } = useAuth();

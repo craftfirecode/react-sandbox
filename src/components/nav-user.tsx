@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar,} from "@/components/ui/sidebar"
 import {BadgeCheckIcon, BellIcon, ChevronsUpDownIcon, CreditCardIcon, LogOutIcon, SparklesIcon} from "lucide-react"
-import {useAuth} from "@/features/auth/guards/AuthProvider.tsx";
+import {useAuth} from "@/components/provider/auth/AuthProvider.tsx";
 import {useNavigate} from "react-router";
 import {supabase} from "@/lib/supabase";
 

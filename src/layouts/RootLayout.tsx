@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Link, Outlet, useLocation} from "react-router";
-import {useAuth} from "@/features/auth/guards/AuthProvider.tsx";
+import {useAuth} from "@/components/provider/auth/AuthProvider.tsx";
 import {Button} from "@/components/ui/button.tsx";
 
 import {
@@ -11,7 +11,8 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {cn} from "@/lib/utils";
-import LogoutButton from "@/features/auth/guards/LogoutButton.tsx";
+import LogoutButton from "@/components/LogoutButton.tsx";
+import {ModeToggle} from "@/components/mode-toggle.tsx";
 
 interface NavLinkProps {
     to: string;
@@ -60,6 +61,7 @@ export default function RootLayout() {
                     </NavigationMenu>
 
                     <div className="flex items-center gap-4">
+                        <ModeToggle />
                         {loading ? (
                             <div className="w-20 h-8 animate-pulse bg-muted rounded" />
                         ) : session ? (

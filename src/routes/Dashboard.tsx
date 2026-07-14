@@ -1,4 +1,4 @@
-import {useAuth} from "@/features/auth/guards/AuthProvider";
+import {useAuth} from "@/components/provider/auth/AuthProvider.tsx";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {Activity, Zap, Coins, Gamepad2} from "lucide-react";
 

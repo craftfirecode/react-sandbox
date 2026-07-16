@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react" // React Hooks importieren
+import { useState } from "react"
 import {
   Collapsible,
   CollapsibleContent,
@@ -16,7 +16,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { ChevronRightIcon } from "lucide-react"
-import { Link, useLocation } from "react-router" // useLocation hinzufügen
+import { Link, useLocation } from "react-router"
 
 interface NavItem {
   title: string
@@ -31,7 +31,7 @@ interface NavItem {
 
 export function NavMain({ items }: { items: NavItem[] }) {
   const { isMobile, setOpenMobile } = useSidebar()
-  const { pathname } = useLocation() // Aktuellen Pfad auslesen
+  const { pathname } = useLocation()
 
   return (
       <SidebarGroup>
@@ -51,7 +51,6 @@ export function NavMain({ items }: { items: NavItem[] }) {
   )
 }
 
-// Unterkomponente für jedes Haupt-Menü-Item
 function NavGroupItem({
                         item,
                         pathname,
@@ -63,25 +62,23 @@ function NavGroupItem({
   isMobile: boolean
   setOpenMobile: (open: boolean) => void
 }) {
-  // Prüfen, ob der aktuelle Pfad der Hauptgruppe oder einem der Unterpunkte entspricht
   const hasActiveChild =
       item.items?.some((subItem) => pathname === subItem.url) || pathname === item.url
 
-  // State zur Steuerung, ob dieses Accordion offen ist
-  const [isOpen, setIsOpen] = useState(item.isActive || hasActiveChild)
+  const [userClickedOpen, setUserClickedOpen] = useState<boolean | null>(null)
 
-  // Wenn der User über einen Link navigiert und ein Unterpunkt dieser Gruppe aktiv wird,
-  // soll sich das Accordion automatisch öffnen
-  useEffect(() => {
-    if (hasActiveChild) {
-      setIsOpen(true)
-    }
-  }, [pathname, hasActiveChild])
+  const [prevPathname, setPrevPathname] = useState(pathname)
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname)
+    setUserClickedOpen(null)
+  }
+
+  const isOpen = userClickedOpen !== null ? userClickedOpen : hasActiveChild
 
   return (
       <Collapsible
           open={isOpen}
-          onOpenChange={setIsOpen} // Ermöglicht manuelles Auf-/Zuklappen
+          onOpenChange={(open) => setUserClickedOpen(open)}
           className="group/collapsible"
           render={<SidebarMenuItem />}
       >
@@ -100,14 +97,14 @@ function NavGroupItem({
                   <SidebarMenuSubItem key={subItem.title}>
                     <SidebarMenuSubButton
                         render={<Link to={subItem.url} />}
-                        isActive={isSubItemActive} // Hebt den aktiven Link optisch hervor
+                        isActive={isSubItemActive}
                         onClick={() => {
                           if (isMobile) {
-                            setOpenMobile(false) // Schließt die Sidebar auf Mobilgeräten
+                            setOpenMobile(false)
                           }
                         }}
                     >
-                      <span>{subItem.title} </span>
+                      <span>{subItem.title}</span>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
               )

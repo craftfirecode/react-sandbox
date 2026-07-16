@@ -1,11 +1,11 @@
 import {useQuery} from "@tanstack/react-query";
-import {motion} from "framer-motion";
 import {ecoFlowApiService} from "@/services/ecoFlowApi.ts";
 import type {IEcoFlowData} from "@/types/ecoFlow.ts";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {Activity, Battery, Power, ShieldCheck, Sun, Thermometer} from "lucide-react";
 import {FadeIn} from "@/components/animation/motion/fadein/FadeIn.tsx";
+import {LoadingSpinner} from "@/components/animation/loadingSpinner.tsx";
 
 
 export default function EcoFlow() {
@@ -19,15 +19,7 @@ export default function EcoFlow() {
     });
 
     if (!ecoFlowData) {
-        return (
-            <div className="flex min-h-[calc(100vh-173px)] items-center justify-center text-muted-foreground font-sans">
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ repeat: Infinity, duration: 1.5, ease: "linear" as const }}
-                    className="h-8 w-8 border-2 border-emerald-500 border-t-transparent rounded-full"
-                />
-            </div>
-        );
+       return <LoadingSpinner />
     }
 
     const animationKey = dataUpdatedAt.toString();

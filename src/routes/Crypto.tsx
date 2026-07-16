@@ -4,13 +4,20 @@ import {Card, CardAction, CardDescription, CardHeader, CardTitle} from "@/compon
 import {ArrowDown, ArrowUp} from "lucide-react";
 import {FadeIn} from "@/components/animation/motion/fadein/FadeIn.tsx";
 import type {ICryptoCoin} from "@/types/cryptoCoin.ts";
+import {LoadingSpinner} from "@/components/animation/loadingSpinner.tsx";
 
 
 export default function Crypto() {
-    const { data } = useQuery<ICryptoCoin[]>({
+    const { data, isLoading } = useQuery<ICryptoCoin[]>({
         queryKey: ['cryptoCoin24'],
         queryFn: apiService.getCrypto,
     });
+
+    if(isLoading) {
+        return (
+            <LoadingSpinner/>
+        )
+    }
 
     return (
         <div>

@@ -13,6 +13,7 @@ import {BadgeCheckIcon, BellIcon, ChevronsUpDownIcon, CreditCardIcon, LogOutIcon
 import {useAuth} from "@/components/provider/auth/AuthProvider.tsx";
 import {useNavigate} from "react-router";
 import {supabase} from "@/lib/supabase";
+import {ModeToggle} from "@/components/mode-toggle.tsx";
 
 export function NavUser({
   user,
@@ -44,6 +45,11 @@ export function NavUser({
 
   return (
     <SidebarMenu>
+      <SidebarMenuItem>
+        <div className="p-2">
+          <ModeToggle />
+        </div>
+      </SidebarMenuItem>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger

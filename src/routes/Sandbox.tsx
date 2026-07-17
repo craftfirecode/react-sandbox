@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import '../App.css';
-import {apiService} from "@/services/api.ts";
+import {apiService} from "@/api/api.ts";
 import {Button} from "@/components/ui/button";
 import {useQuery} from "@tanstack/react-query";
 

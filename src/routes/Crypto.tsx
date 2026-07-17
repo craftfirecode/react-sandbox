@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiService} from "@/services/api.ts";
+import {apiService} from "@/api/api.ts";
 import {Card, CardAction, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {ArrowDown, ArrowUp} from "lucide-react";
 import {FadeIn} from "@/components/animation/motion/fadein/FadeIn.tsx";

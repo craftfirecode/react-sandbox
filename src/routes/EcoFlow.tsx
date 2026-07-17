@@ -1,5 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
-import {ecoFlowApiService} from "@/services/ecoFlowApi.ts";
+import {ecoFlowApiService} from "@/api/ecoFlowApi.ts";
 import type {IEcoFlowData} from "@/types/ecoFlow.ts";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";

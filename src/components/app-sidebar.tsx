@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 
 import { NavMain } from "@/components/nav-main"
@@ -12,7 +10,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import {TerminalSquareIcon, BotIcon, BookOpenIcon, BatteryLowIcon} from "lucide-react"
+import {TerminalSquareIcon, BookOpenIcon, BatteryLowIcon} from "lucide-react"
 
 // This is sample data.
 const data = {
@@ -50,24 +48,6 @@ const data = {
         {
           title: "Crypto",
           url: "/app/crypto",
-        },
-      ],
-    },
-    {
-      title: "Gaming",
-      url: "#",
-      icon: (
-        <BotIcon
-        />
-      ),
-      items: [
-        {
-          title: "Steam",
-          url: "#",
-        },
-        {
-          title: "WOW",
-          url: "#",
         },
       ],
     },

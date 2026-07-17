@@ -12,7 +12,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { TerminalSquareIcon, BotIcon, BookOpenIcon } from "lucide-react"
+import {TerminalSquareIcon, BotIcon, BookOpenIcon, BatteryLowIcon} from "lucide-react"
 
 // This is sample data.
 const data = {
@@ -28,7 +28,7 @@ const data = {
       title: "Smart Home",
       url: "#",
       icon: (
-        <TerminalSquareIcon
+        <BatteryLowIcon
         />
       ),
       isActive: true,
@@ -68,6 +68,20 @@ const data = {
         {
           title: "WOW",
           url: "#",
+        },
+      ],
+    },
+    {
+      title: "Tools",
+      url: "#",
+      icon: (
+          <TerminalSquareIcon
+          />
+      ),
+      items: [
+        {
+          title: "Todos",
+          url: "/app/todos",
         },
       ],
     },

@@ -9,7 +9,8 @@
     "dev": "concurrently --names \"vite,express\" -c \"bgBlue.bold,bgGreen.bold\" --kill-others-on-fail \"npm run dev:frontend\" \"npm run dev:backend\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "migration" : "supabase db push"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

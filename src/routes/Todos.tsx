@@ -1,15 +1,63 @@
 import { useState } from "react"
-import { useTodos, useAddTodo, useDeleteTodo, useUpdateTodo } from "@/api/todos/todos.ts"
+import {
+    fetchTodos,
+    addTodo,
+    deleteTodo,
+    updateTodo,
+} from "@/api/todos/todos"
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Trash2, Loader2, Pencil, Check, X } from "lucide-react"
 
+function useTodos() {
+    return useQuery({
+        queryKey: ["todos"],
+        queryFn: fetchTodos,
+    })
+}
+
+function useAddTodo() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: addTodo,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["todos"] })
+        },
+    })
+}
+
+function useDeleteTodo() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: deleteTodo,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["todos"] })
+        },
+    })
+}
+
+function useUpdateTodo() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: updateTodo,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["todos"] })
+        },
+    })
+}
+
 export default function Todos() {
     const { data: todos, isLoading, error } = useTodos()
-    const addTodo = useAddTodo()
-    const deleteTodo = useDeleteTodo()
-    const updateTodo = useUpdateTodo()
+    const addTodoMutation = useAddTodo()
+    const deleteTodoMutation = useDeleteTodo()
+    const updateTodoMutation = useUpdateTodo()
 
     const [title, setTitle] = useState("")
     const [editingId, setEditingId] = useState<string | null>(null)
@@ -17,13 +65,9 @@ export default function Todos() {
 
     const handleAdd = () => {
         if (!title.trim()) return
-        addTodo.mutate(title, {
+        addTodoMutation.mutate(title, {
             onSuccess: () => setTitle(""),
         })
-    }
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") handleAdd()
     }
 
     const startEdit = (id: string, currentTodo: string) => {
@@ -38,7 +82,7 @@ export default function Todos() {
 
     const saveEdit = (id: string) => {
         if (!editValue.trim()) return
-        updateTodo.mutate(
+        updateTodoMutation.mutate(
             { id, todo: editValue },
             {
                 onSuccess: () => {
@@ -49,26 +93,21 @@ export default function Todos() {
         )
     }
 
-    const handleEditKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, id: string) => {
-        if (e.key === "Enter") saveEdit(id)
-        if (e.key === "Escape") cancelEdit()
-    }
-
     return (
         <Card className="max-w-md mx-auto mt-10">
             <CardHeader>
                 <CardTitle>Todos</CardTitle>
             </CardHeader>
+
             <CardContent className="space-y-4">
                 <div className="flex gap-2">
                     <Input
                         placeholder="Neues Todo"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        onKeyDown={handleKeyDown}
                     />
-                    <Button onClick={handleAdd} disabled={addTodo.isPending}>
-                        {addTodo.isPending ? (
+                    <Button onClick={handleAdd} disabled={addTodoMutation.isPending}>
+                        {addTodoMutation.isPending ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
                             "Hinzufügen"
@@ -76,66 +115,41 @@ export default function Todos() {
                     </Button>
                 </div>
 
-                {isLoading && <p className="text-sm text-muted-foreground">Lädt...</p>}
-                {error && (
-                    <p className="text-sm text-destructive">Fehler: {error.message}</p>
-                )}
+                {isLoading && <p>Lädt...</p>}
+                {error && <p>Fehler: {error.message}</p>}
 
                 <ul className="space-y-2">
                     {todos?.map((t) => (
-                        <li
-                            key={t.id}
-                            className="flex items-center justify-between rounded-md border px-3 py-2 gap-2"
-                        >
+                        <li key={t.id} className="flex justify-between border p-2">
                             {editingId === t.id ? (
                                 <>
                                     <Input
                                         value={editValue}
                                         onChange={(e) => setEditValue(e.target.value)}
-                                        onKeyDown={(e) => handleEditKeyDown(e, t.id)}
-                                        autoFocus
                                     />
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => saveEdit(t.id)}
-                                        disabled={updateTodo.isPending}
-                                    >
-                                        <Check className="h-4 w-4 text-green-600" />
+                                    <Button onClick={() => saveEdit(t.id)}>
+                                        <Check />
                                     </Button>
-                                    <Button variant="ghost" size="icon" onClick={cancelEdit}>
-                                        <X className="h-4 w-4" />
+                                    <Button onClick={cancelEdit}>
+                                        <X />
                                     </Button>
                                 </>
                             ) : (
                                 <>
-                                    <span className="flex-1">{t.todo}</span>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => startEdit(t.id, t.todo)}
-                                    >
-                                        <Pencil className="h-4 w-4" />
-                                    </Button>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => deleteTodo.mutate(t.id)}
-                                        disabled={deleteTodo.isPending}
-                                    >
-                                        <Trash2 className="h-4 w-4 text-destructive" />
-                                    </Button>
+                                    <span>{t.todo}</span>
+                                    <div className="flex gap-2">
+                                        <Button onClick={() => startEdit(t.id, t.todo)}>
+                                            <Pencil />
+                                        </Button>
+                                        <Button onClick={() => deleteTodoMutation.mutate(t.id)}>
+                                            <Trash2 />
+                                        </Button>
+                                    </div>
                                 </>
                             )}
                         </li>
                     ))}
                 </ul>
-
-                {todos?.length === 0 && (
-                    <p className="text-sm text-muted-foreground text-center">
-                        Keine Todos vorhanden.
-                    </p>
-                )}
             </CardContent>
         </Card>
     )

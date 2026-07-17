@@ -1,17 +1,19 @@
 import { useState } from "react"
-import { useTodos, useAddTodo, useDeleteTodo } from "@/api/todos/todos.ts"
+import { useTodos, useAddTodo, useDeleteTodo, useUpdateTodo } from "@/api/todos/todos.ts"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trash2, Loader2 } from "lucide-react"
-import {LoadingSpinner} from "@/components/animation/loadingSpinner.tsx";
+import { Trash2, Loader2, Pencil, Check, X } from "lucide-react"
 
 export default function Todos() {
     const { data: todos, isLoading, error } = useTodos()
     const addTodo = useAddTodo()
     const deleteTodo = useDeleteTodo()
+    const updateTodo = useUpdateTodo()
 
     const [title, setTitle] = useState("")
+    const [editingId, setEditingId] = useState<string | null>(null)
+    const [editValue, setEditValue] = useState("")
 
     const handleAdd = () => {
         if (!title.trim()) return
@@ -24,8 +26,32 @@ export default function Todos() {
         if (e.key === "Enter") handleAdd()
     }
 
-    if (!todos) {
-        return <LoadingSpinner />
+    const startEdit = (id: string, currentTodo: string) => {
+        setEditingId(id)
+        setEditValue(currentTodo)
+    }
+
+    const cancelEdit = () => {
+        setEditingId(null)
+        setEditValue("")
+    }
+
+    const saveEdit = (id: string) => {
+        if (!editValue.trim()) return
+        updateTodo.mutate(
+            { id, todo: editValue },
+            {
+                onSuccess: () => {
+                    setEditingId(null)
+                    setEditValue("")
+                },
+            }
+        )
+    }
+
+    const handleEditKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, id: string) => {
+        if (e.key === "Enter") saveEdit(id)
+        if (e.key === "Escape") cancelEdit()
     }
 
     return (
@@ -56,20 +82,51 @@ export default function Todos() {
                 )}
 
                 <ul className="space-y-2">
-                    {todos?.map((todo) => (
+                    {todos?.map((t) => (
                         <li
-                            key={todo.id}
-                            className="flex items-center justify-between rounded-md border px-3 py-2"
+                            key={t.id}
+                            className="flex items-center justify-between rounded-md border px-3 py-2 gap-2"
                         >
-                            <div>{todo.todo}</div>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => deleteTodo.mutate(todo.id)}
-                                disabled={deleteTodo.isPending}
-                            >
-                                <Trash2 className="h-4 w-4 text-destructive" />
-                            </Button>
+                            {editingId === t.id ? (
+                                <>
+                                    <Input
+                                        value={editValue}
+                                        onChange={(e) => setEditValue(e.target.value)}
+                                        onKeyDown={(e) => handleEditKeyDown(e, t.id)}
+                                        autoFocus
+                                    />
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => saveEdit(t.id)}
+                                        disabled={updateTodo.isPending}
+                                    >
+                                        <Check className="h-4 w-4 text-green-600" />
+                                    </Button>
+                                    <Button variant="ghost" size="icon" onClick={cancelEdit}>
+                                        <X className="h-4 w-4" />
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="flex-1">{t.todo}</span>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => startEdit(t.id, t.todo)}
+                                    >
+                                        <Pencil className="h-4 w-4" />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => deleteTodo.mutate(t.id)}
+                                        disabled={deleteTodo.isPending}
+                                    >
+                                        <Trash2 className="h-4 w-4 text-destructive" />
+                                    </Button>
+                                </>
+                            )}
                         </li>
                     ))}
                 </ul>

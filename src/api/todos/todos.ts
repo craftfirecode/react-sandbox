@@ -8,6 +8,7 @@ export const fetchTodos = async () => {
     const { data, error } = await supabase
         .from('todos')
         .select('*')
+        .order('id', { ascending: true })
 
     if (error) {
         throw new Error(error.message)
@@ -93,6 +94,23 @@ export const addTodo = async (todo: string) => {
 }
 
 // ---------------------------------------------
+// Update
+// ---------------------------------------------
+export const updateTodo = async ({ id, todo }: { id: string; todo: string }) => {
+    const { data, error } = await supabase
+        .from('todos')
+        .update({ todo })
+        .eq('id', id)
+        .select()
+
+    if (error) {
+        throw new Error(error.message)
+    }
+
+    return data
+}
+
+// ---------------------------------------------
 // Delete
 // ---------------------------------------------
 export const deleteTodo = async (id: string) => {
@@ -139,6 +157,17 @@ export function useDeleteTodo() {
 
     return useMutation({
         mutationFn: deleteTodo,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['todos'] })
+        },
+    })
+}
+
+export function useUpdateTodo() {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: updateTodo,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['todos'] })
         },

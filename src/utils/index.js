@@ -1,0 +1,6 @@
+export * as arr from "./array"
+export * as obj from "./object"
+export * as str from "./string"
+export * as num from "./number"
+export * as fn from "./function"
+export * as is from "./is"

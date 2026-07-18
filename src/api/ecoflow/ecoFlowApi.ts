@@ -1,4 +1,4 @@
-import { supabase } from "../lib/supabase";
+import {supabase} from "@/lib/supabase.ts";
 
 const BASE_URL = 'https://ecoflow.craftfire.de/api';
 

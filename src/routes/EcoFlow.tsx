@@ -1,11 +1,11 @@
 import {useQuery} from "@tanstack/react-query";
-import {ecoFlowApiService} from "@/api/ecoFlowApi.ts";
 import type {IEcoFlowData} from "@/types/ecoFlow.ts";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Badge} from "@/components/ui/badge";
 import {Activity, Battery, Power, ShieldCheck, Sun, Thermometer} from "lucide-react";
 import {FadeIn} from "@/components/animation/motion/fadein/FadeIn.tsx";
 import {LoadingSpinner} from "@/components/animation/loadingSpinner.tsx";
+import {ecoFlowApiService} from "@/api/ecoflow/ecoFlowApi.ts";
 
 
 export default function EcoFlow() {

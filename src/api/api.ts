@@ -27,3 +27,27 @@ export const apiService = {
         }
     },
 };
+
+// const BASE_URL = "https://dummyjson.com";
+//
+// async function apiRequest(
+//     path: string,
+//     options: RequestInit = {}
+// ) {
+//     const token = getToken();
+//
+//     const response = await fetch(`${BASE_URL}${path}`, {
+//         ...options,
+//         headers: {
+//             "Content-Type": "application/json",
+//             ...options.headers,
+//             ...(token && { Authorization: `Bearer ${token}` }),
+//         },
+//     });
+//
+//     if (!response.ok) {
+//         throw new Error("API Fehler");
+//     }
+//
+//     return response.json();
+// }

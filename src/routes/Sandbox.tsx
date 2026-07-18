@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react';
 import '../App.css';
-import {apiService} from "@/api/api.ts";
 import {Button} from "@/components/ui/button";
 import {useQuery} from "@tanstack/react-query";
+import {postAPI} from "@/api/post/post-api.ts";
 
 interface IPost {
     id: number;
@@ -15,7 +15,7 @@ export default function Sandbox() {
 
     const { data: posts, isLoading, isError, error } = useQuery<IPost[]>({
         queryKey: ['todos'],
-        queryFn: apiService.getPosts,
+        queryFn: () => postAPI("/posts"),
         select: (data) => data.slice(0, 5)
     });
 

@@ -1,16 +1,16 @@
 import {useQuery} from "@tanstack/react-query";
-import {apiService} from "@/api/api.ts";
 import {Card, CardAction, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {ArrowDown, ArrowUp} from "lucide-react";
 import {FadeIn} from "@/components/animation/motion/fadein/FadeIn.tsx";
 import type {ICryptoCoin} from "@/types/cryptoCoin.ts";
 import {LoadingSpinner} from "@/components/animation/loadingSpinner.tsx";
+import {cryptoAPI} from "@/api/crypto/crypto-api.ts";
 
 
 export default function Crypto() {
     const { data, isLoading } = useQuery<ICryptoCoin[]>({
+        queryFn: cryptoAPI,
         queryKey: ['cryptoCoin24'],
-        queryFn: apiService.getCrypto,
     });
 
     if(isLoading) {

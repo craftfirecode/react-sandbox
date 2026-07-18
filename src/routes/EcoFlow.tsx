@@ -5,7 +5,7 @@ import {Badge} from "@/components/ui/badge";
 import {Activity, Battery, Power, ShieldCheck, Sun, Thermometer} from "lucide-react";
 import {FadeIn} from "@/components/animation/motion/fadein/FadeIn.tsx";
 import {LoadingSpinner} from "@/components/animation/loadingSpinner.tsx";
-import {ecoFlowApiService} from "@/api/ecoflow/ecoFlowApi.ts";
+import {ecoFlowApiService} from "@/api/ecoflow/ecoflowApi.ts";
 
 
 export default function EcoFlow() {

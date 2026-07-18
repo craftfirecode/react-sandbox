@@ -14,7 +14,7 @@ import React from "react";
 
 export default function ProtectedLayout() {
     const location = useLocation();
-    const pathnames = location.pathname.split('/').filter((x) => x);
+    const pathname = location.pathname.split('/').filter((x) => x);
 
     const breadcrumbMap: Record<string, string> = {
         app: "Dashboard",
@@ -37,12 +37,12 @@ export default function ProtectedLayout() {
                         />
                         <Breadcrumb>
                             <BreadcrumbList>
-                                {pathnames.map((value, index) => {
-                                    const last = index === pathnames.length - 1;
-                                    const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+                                {pathname.map((value, index) => {
+                                    const last = index === pathname.length - 1;
+                                    const to = `/${pathname.slice(0, index + 1).join('/')}`;
                                     const label = breadcrumbMap[value.toLowerCase()] || value;
 
-                                    if (value.toLowerCase() === "app" && pathnames[index + 1] === "dashboard") {
+                                    if (value.toLowerCase() === "app" && pathname[index + 1] === "dashboard") {
                                         return null;
                                     }
 
